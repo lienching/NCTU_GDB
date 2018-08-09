@@ -18,28 +18,28 @@ void get_args(int ac, char **av)
 {  
 	int i;
 	num_inputs = ac - 1;
-	for (i = 0; i < num_inputs; i++)
+    for (i = 0; i < num_inputs; i++) 
 		x[i] = atoi(av[i+1]);
+    
 }
 
 void scoot_over(int jj)
 {  
 	int k;
-	for (k = num_y-1; k > jj; k++)
+	for (k = num_y; k > jj; k--)
 		y[k] = y[k-1];
 }
 
 void insert(int new_y)
 {  
 	int j;
-	if (num_y = 0)  { // y empty so far, easy case
-		//if (num_y = 0)  { // y empty so far, easy case
+	if (num_y == 0)  { // y empty so far, easy case
 		y[0] = new_y;
 		return;
 	}
 	// need to insert just before the first y 
 	// element that new_y is less than
-	for (j = 0; j < num_y; j++) {
+    for (j = 0; j < num_y; j++) {
 		if (new_y < y[j]) {
 			// shift y[j], y[j+1],... rightward 
 			// before inserting new_y
@@ -47,7 +47,9 @@ void insert(int new_y)
 			y[j] = new_y;
 			return;
 		}
-	}
+    }
+
+    y[num_y] = new_y;
 }
 
 
@@ -64,19 +66,24 @@ void print_results()
 {  
 	int i;
 	for (i = 0; i < num_inputs; i++) {
-		printf("%d\n",y[i]);
+		printf("%d ",y[i]);
 	}
+
+    printf("\n");
 }
 
 int main(int argc, char ** argv)
 {  
-	get_args(argc,argv);
+	get_args(argc, argv);
 	int pid = fork();
 	if (pid == 0) {
 		process_data();
 	}
-	else
-		print_results();
+	else {
 		waitpid(pid , NULL , 0);
+        exit(0);
+    }
+
+	print_results();
 	return 0;
 }
